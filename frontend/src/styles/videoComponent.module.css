@@ -47,6 +47,7 @@
     border-radius: 10px;
     width: 30vw;
     padding-inline: 20px;
+    z-index: 2;
 }
 
 .chatContainer {
