@@ -1,0 +1,19 @@
+# Ignore node modules
+/node_modules
+
+# Ignore the env file in src/
+src/.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# System and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# OS temp files
+*.swp
