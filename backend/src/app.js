@@ -21,7 +21,11 @@ const io = connectToSocket(server);
 
 
 app.set("port", (process.env.PORT || 8000))
-app.use(cors());
+app.use(cors({
+  origin: "https://rtc-app-xeoq.onrender.com",
+  credentials: true
+}));
+
 app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));
 
@@ -32,12 +36,12 @@ app.use("/api/v1/users", userRoutes);
 //   credentials: true
 // }
 
-// // Connect to MongoDB
-// mongoose.connect(process.env.MONGO_URI).then(() => {
-//   console.log("✅ MongoDB connected");
-// }).catch(err => {
-//   console.error("❌ Mongo connection error:", err.message);
-// });
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI).then(() => {
+  console.log("✅ MongoDB connected");
+}).catch(err => {
+  console.error("❌ Mongo connection error:", err.message);
+});
 
 // // Session setup
 // app.use(
@@ -54,13 +58,18 @@ app.use("/api/v1/users", userRoutes);
 // );
 
 const start = async () => {
-    app.set("mongo_user")
+  try {
     const connectionDb = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`✅ MongoDB Connected at: ${connectionDb.connection.host}`);
 
-    console.log(`MONGO Connected DB HOst: ${connectionDb.connection.host}`)
     server.listen(app.get("port"), () => {
-        console.log("LISTENIN ON PORT 8000")
+      console.log(`🚀 Server listening on port ${app.get("port")}`);
     });
-}
+
+  } catch (err) {
+    console.error("❌ Failed to connect to MongoDB:", err.message);
+    process.exit(1); // Exit so Render shows crash
+  }
+};
 
 start();
